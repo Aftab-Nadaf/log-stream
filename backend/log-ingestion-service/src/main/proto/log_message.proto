@@ -1,0 +1,36 @@
+
+syntax = "proto3";
+
+package logstream;
+
+option java_package = "com.logstream.ingestion.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "LogStreamProto";
+
+// Log severity levels
+enum LogLevel {
+    LOG_LEVEL_UNSPECIFIED = 0;
+    INFO = 1;
+    WARN = 2;
+    ERROR = 3;
+    DEBUG = 4;
+}
+
+// Individual application log
+message LogMessage {
+    string timestamp = 1;
+    string service_name = 2;
+    LogLevel level = 3;
+    string message = 4;
+}
+
+// Response after receiving a log
+message LogResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// gRPC service
+service LogIngestionService {
+    rpc SendLog(LogMessage) returns (LogResponse);
+}
